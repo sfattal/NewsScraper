@@ -7,7 +7,7 @@ var cheerio = require("cheerio");
 
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = 3002;
 
 var app = express();
 
@@ -35,7 +35,7 @@ var articles = []
 
 app.get("/", function(req, res) {
     res.render("home", { article: articles });
-})
+});
 
 // A GET route for scraping the New York Times website
 app.get("/scrape", function(req, res) {

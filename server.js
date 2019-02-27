@@ -1,4 +1,5 @@
 var express = require("express");
+var exphbs = require("express-handlebars");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
@@ -20,12 +21,21 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+// Set Handlebars as the default templating engine.
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://<dbuser>:<dbpassword>@ds153495.mlab.com:53495/heroku_7ddhjxfp";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 mongoose.connect(MONGODB_URI);
 
 // Routes
+var articles = []
+
+app.get("/", function(req, res) {
+    res.render("home", { article: articles });
+})
 
 // A GET route for scraping the New York Times website
 app.get("/scrape", function(req, res) {
@@ -52,6 +62,7 @@ app.get("/scrape", function(req, res) {
         .then(function(dbArticle) {
           // View the added result in the console
           console.log(dbArticle);
+          articles.push(dbArticle);
         })
         .catch(function(err) {
           // If an error occurred, log it

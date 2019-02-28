@@ -36,11 +36,22 @@ mongoose.connect(MONGODB_URI);
 var articles = []
 
 app.get("/", function(req, res) {
-    res.render("index", { article: articles });
+  db.Article.find({"saved": false}, function(error, data) {
+    var hbsObject = {
+      article: data
+    };
+    console.log(hbsObject);
+    res.render("index", hbsObject);
+  });
 });
 
 app.get("/saved", function(req, res) {
-res.render("saved", { article: articles });
+  db.Article.find({"saved": true}).populate("notes").exec(function(error, articles) {
+    var hbsObject = {
+      article: articles
+    };
+    res.render("saved", hbsObject);
+  });
 });
 
 // A GET route for scraping the New York Times website

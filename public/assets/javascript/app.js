@@ -69,3 +69,14 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+// Scrape button
+$(".scrape-new").on("click", function() {
+  $.ajax({
+      method: "GET",
+      url: "/scrape",
+  }).done(function(data) {
+      console.log(data)
+      window.location = "/"
+  })
+});

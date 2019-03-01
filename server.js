@@ -31,8 +31,6 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.connect(MONGODB_URI);
 
 // Routes
-// require("./routes/apiRoutes")(app);
-// require("./routes/htmlRoutes")(app);
 var articles = []
 
 app.get("/", function(req, res) {
